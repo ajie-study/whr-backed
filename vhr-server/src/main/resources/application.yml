@@ -1,0 +1,9 @@
+server:
+  port: 9000
+logging:
+  config: classpath:logback.xml
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://129.211.74.133:3306/admin-vhr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
