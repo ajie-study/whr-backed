@@ -1,9 +1,18 @@
 package com.whr.controller;
 
-import com.whr.constant.Constant;
+import com.alibaba.fastjson.JSONObject;
+import com.whr.constant.StatusConstant;
 import com.whr.model.ResultModel;
+import com.whr.model.User;
+import com.whr.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @ClassName : UserController
@@ -13,10 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("user")
+@Api(tags = "用户信息接口")
 public class UserController {
 
-    public ResultModel addUser() {
+    @Resource
+    private UserService userService;
 
-        return ResultModel.builder().status(200).message(Constant.ADD_USER_SUCCESS).build();
+    @GetMapping("{uid}")
+    @ApiOperation("根据id获取用户信息")
+    public ResultModel addUser(@PathVariable("uid") Integer uid) {
+
+        User user = userService.selectUserById(uid);
+
+        return ResultModel.builder().status(StatusConstant.SUCCESS).data(user).build();
     }
 }

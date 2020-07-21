@@ -121,7 +121,7 @@ public class AESUtil {
 //        System.out.println(encrypt);
 //        System.out.println(decrypt);
 
-        System.out.println(AESUtil.decrypt("LCBCittkiUPrBJ1w8jn21w=="));
+        System.out.println(AESUtil.encrypt("123456"));
     }
     
 }

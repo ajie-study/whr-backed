@@ -17,4 +17,14 @@ public class StatusConstant {
      * 参数错误
      */
     public static final Integer BAD_REQUEST = 400;
+
+    /**
+     * 系统内部错误
+     */
+    public static final Integer SERVER_INTERNAL_EXCEPTION = 500;
+
+    /**
+     * 未认证错误
+     */
+    public static final Integer UNAUTHORIZED = 401;
 }
