@@ -25,3 +25,4 @@ hs_err_pid*
 class
 *.iml
 target
+/.idea/inspectionProfiles/Project_Default.xml
