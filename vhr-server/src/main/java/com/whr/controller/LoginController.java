@@ -32,7 +32,7 @@ public class LoginController {
     @Resource
     private LoginService loginService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @ApiOperation("登录")
     public ResultModel login(@RequestBody @Validated LoginDTO loginDTO){
 
@@ -40,7 +40,7 @@ public class LoginController {
     }
 
 
-    @GetMapping("/verifyCode")
+    @GetMapping("/verifyCode/*")
     @ApiOperation("获取验证码")
     public void verifyCode(HttpServletRequest request, HttpServletResponse resp) throws IOException {
         VerifyCodeUtil code = new VerifyCodeUtil();

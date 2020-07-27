@@ -30,14 +30,12 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 请求路径
-        String requestURI = request.getRequestURI();
-        // 忽略路径
-        for (String s : excludePath.split(",")) {
-            if(s.equalsIgnoreCase(requestURI)){
-                return true;
-            }
+        // 请求方法
+        String requestMethod = request.getMethod();
+        if (requestMethod.contains("OPTIONS") || requestMethod.contains("options")) {
+            return true;
         }
+
         // 获取token
         String token = request.getHeader(JwtUtil.header);
 
@@ -45,7 +43,11 @@ public class TokenInterceptor implements HandlerInterceptor {
             throw new UnauthorizedException(StatusConstant.UNAUTHORIZED, Constant.UNAUTHORIZED_AGAIN_LOGIN);
         }
         // 判断token是否有效
-        JwtUtil.getUserFromToken(token);
+        try {
+            JwtUtil.getUserFromToken(token);
+        } catch (Exception exception) {
+            throw new UnauthorizedException(StatusConstant.UNAUTHORIZED, Constant.UNAUTHORIZED_AGAIN_LOGIN);
+        }
 
         // 判断是否过期
         Date expirationDateFromToken = JwtUtil.getExpirationDateFromToken(token);

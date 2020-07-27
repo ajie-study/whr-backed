@@ -54,11 +54,7 @@ public class JwtUtil {
      * @return
      */
     public static Claims getTokenClaim (String token) {
-        try {
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        }catch (Exception e){
-           throw new RuntimeException("解析token出错,请重新登录");
-        }
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
     /**
      * 验证token是否过期失效
