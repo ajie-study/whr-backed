@@ -8,7 +8,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import javax.annotation.Resource;
 
 /**
  * 解决中文问题
@@ -16,8 +15,6 @@ import javax.annotation.Resource;
  */
 @Configuration
 public class RedisConfiguration {
-    @Resource
-    private RedisTemplate redisTemplate;
 
     @Bean(name = "redisTemplate")
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {

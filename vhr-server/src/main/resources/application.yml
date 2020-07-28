@@ -1,3 +1,3 @@
 spring:
   profiles:
-    active: ${APP_PROFILE:pro}
+    active: ${APP_PROFILE:dev}
