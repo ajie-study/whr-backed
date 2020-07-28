@@ -9,6 +9,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -29,9 +30,10 @@ public class MyWebMvcConfigurerAdapter implements WebMvcConfigurer {
      * 添加拦截器的方式，可直接new一个对象，
      * registry.addInterceptor(new ParamInterceptor())，
      * 但通过手动new出来的拦截器中，无法使用@Autowired 和 @Value 加载对象和配置文件参数。
-     *
+     * <p>
      * 所以需要在添加拦截器此处，通过@Bean 注解，意味着将这个对象
      * 交给spring管理。那么该拦截器才可以使用@Value等spring管理的注解
+     *
      * @return
      */
 //    @Bean
@@ -48,8 +50,6 @@ public class MyWebMvcConfigurerAdapter implements WebMvcConfigurer {
 //        registry.addInterceptor(paramInterceptor()).addPathPatterns("/**");
 //        WebMvcConfigurer.super.addInterceptors(registry);
 //    }
-
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
@@ -58,13 +58,28 @@ public class MyWebMvcConfigurerAdapter implements WebMvcConfigurer {
 
         InterceptorRegistration interceptorRegistration = registry.addInterceptor(new TokenInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login")
-                .excludePathPatterns("/swagger-resources/**", "/swagger-ui.html/**");
+                .excludePathPatterns("/**/login/**")
+                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 
         interceptorRegistration.excludePathPatterns(split);
 
     }
 
 
+    /**
+     * 解决swagger-ui.html 404无法访问的问题
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 解决静态资源无法访问
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
+        // 解决swagger无法访问
+        registry.addResourceHandler("/swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        // 解决swagger的js文件无法访问
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 
 }

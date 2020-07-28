@@ -19,4 +19,10 @@ public class Constant {
 
     public static final String TOKEN_EXPIRED = "认证已过期，请重新登录";
 
+    /**
+     * redis 常量
+     */
+
+    public static final String REDIS_VERIFY_CODE = "verify_code:";
+
 }

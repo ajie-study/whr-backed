@@ -17,11 +17,11 @@ import javax.validation.constraints.Size;
 public class LoginDTO {
 
     @NotBlank(message = "用户名不能为空")
-    @Size(min = 4, message = "用户名长度不能低于4")
+    @Size(min = 4, max = 10, message = "用户名长度在 4 到 10 个字符")
     private String username;
 
     @NotBlank(message = "密码不能为空")
-    @Size(min = 4, message = "密码长度不能低于4")
+    @Size(min = 6, message = "密码长度在 6 到 20 个字符")
     private String password;
 
     /**

@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @ClassName : LoginServiceImpl
@@ -36,28 +38,17 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
     @Resource
     private UserMapper userMapper;
 
-    @Resource
-    private HttpServletRequest request;
-
     @Override
     public ResultModel login(LoginDTO loginDTO) {
-
-        // 1.判断验证码
-        HttpSession session = request.getSession();
-        String code = (String)session.getAttribute(Constant.VERIFY_CODE);
-        log.info("输入验证码为{}", code);
-        if(!(code.equalsIgnoreCase(loginDTO.getCode()))){
-            return ResultModel.builder().status(StatusConstant.BAD_REQUEST).message("验证码错误").build();
-        }
 
         String username = loginDTO.getUsername();
 
         log.info("用户开始{}登录", username);
 
-        // 2.查询数据库
+        // 1.查询数据库
         User userDB = userMapper.getUserByUsername(username);
 
-        // 3.对比密码
+        // 2.对比密码
         // base64解密
         String pwd = Base64Util.decoder(loginDTO.getPassword());
 
@@ -69,7 +60,7 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
             return ResultModel.builder().status(StatusConstant.BAD_REQUEST).message("账号或密码错误").build();
         }
 
-        // 4.生成token
+        // 3.生成token
         String token = JwtUtil.createToken(JSONObject.toJSONString(userDB));
 
         // 组装vo

@@ -3,6 +3,7 @@ package com.whr.exception;
 import com.whr.constant.StatusConstant;
 import com.whr.model.ResultModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -32,6 +33,11 @@ public class MyExceptionHandler {
 
         if( e instanceof  UnauthorizedException ){
             resultModel.setStatus(((UnauthorizedException) e).getStatus());
+        }
+
+        // spring中参数校验失败，抛出的异常
+        if( e instanceof MethodArgumentNotValidException){
+            resultModel.setMessage(((MethodArgumentNotValidException) e).getBindingResult().getFieldError().getDefaultMessage());
         }
 
         // 记录日志
