@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyWebMvcConfigurerAdapter implements WebMvcConfigurer {
 
 
-    @Value("${exclude-path}")
+    @Value("${excludePath}")
     private String excludePath;
 
 
